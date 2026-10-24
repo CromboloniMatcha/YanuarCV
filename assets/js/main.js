@@ -4,6 +4,7 @@ const views=[['roster','Roster'],['skills','Skills'],['dossier','Dossier'],['mis
 const nav=$('#nav'),stage=$('#stage'),wipe=$('#wipe'),boot=$('#boot');
 let cur=views.some(v=>v[0]===location.hash.slice(1))?location.hash.slice(1):'roster',op=0,busy=false,ready=false,entered=false;
 nav.innerHTML=views.map(([id,l],i)=>`<a href="#${id}" data-v="${id}"><b>0${i+1}</b>${l}</a>`).join('');
+const z=n=>String(n).padStart(2,'0');
 const chips=a=>a.map(s=>`<span class="chip">${s}</span>`).join('');
 const R={
 roster:()=>{const o=D.operators[op];return `<section class="roster row g-0">
@@ -18,13 +19,14 @@ dossier:()=>`<section class="rv"><p class="mono">// PERSONNEL DOSSIER</p><h1>Abo
  <div class="col-lg-5"><div class="panel"><h3>Education</h3>${D.education.map(e=>`<div class="ed"><span class="mono">${e.y}</span><br><b>${e.t}</b><small>${e.o}</small></div>`).join('')}</div>
  <div class="panel mt-3"><h3>Contact</h3><a href="mailto:${D.email}">${D.email}</a>${D.links.filter(l=>l.u).map(l=>`<a href="${l.u}" target="_blank" rel="noopener noreferrer">${l.l} &#8599;</a>`).join('')}</div></div></div></section>`,
 missions:()=>`<section class="rv"><p class="mono">// MISSION LOG</p><h1>Experience</h1><div>${D.experience.map(x=>`<div class="mi"><div><span class="mono">${x.year}</span><br><em class="st">${x.status}</em></div><div><h3>${x.title}</h3><p class="mono">${x.org}</p><ul>${x.pts.map(p=>`<li>${p}</li>`).join('')}</ul></div></div>`).join('')}</div></section>`,
-deployments:()=>`<section class="rv"><p class="mono">// DEPLOYMENTS</p><h1>Projects</h1><div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">${D.projects.map(p=>`<div class="col"><a class="cp" href="${p.url}" target="_blank" rel="noopener noreferrer"><div class="thumb"${p.img?` style="background-image:url('${p.img}')"`:''}><span>${p.type}</span></div><div class="body"><h3>${p.title}</h3><p>${p.summary}</p><div>${chips(p.tags)}</div><span class="go">OPEN PROJECT &#8599;</span></div></a></div>`).join('')}</div></section>`,
+deployments:()=>`<section class="rv"><p class="mono">// DEPLOYMENTS</p><h1>Projects</h1><div class="hub"><a class="pbtn" href="#projects" aria-label="Open project gallery"><span class="r1"></span><span class="r2"></span><span class="in2"><b>PROJECT</b><small>ENTER &#9654;</small></span></a><p class="mono">${z(D.projects.length)} FILES AVAILABLE</p></div></section>`,
+projects:()=>`<p class="mono">// DEPLOYMENTS / SELECT PROJECT</p><div id="team" class="team">${teamHTML()}</div>`,
 credentials:()=>`<section class="rv"><p class="mono">// CREDENTIALS</p><h1>Certifications</h1><div class="row row-cols-1 row-cols-md-2 g-3">${D.certs.map((c,i)=>`<div class="col"><div class="panel"><span class="mono">CERT-0${i+1}</span><h3>${c}</h3></div></div>`).join('')}</div></section>`
 };
 function render(gl){
  stage.innerHTML=R[cur]();stage.className=gl?'gl':'';
  stage.querySelectorAll('.info>*,.rv>*').forEach((e,i)=>e.style.setProperty('--n',i%12));
- nav.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a.dataset.v===cur));
+ nav.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a.dataset.v===(cur==='projects'?'deployments':cur)));
  requestAnimationFrame(()=>requestAnimationFrame(()=>stage.classList.add('in')));
  if(cur==='skills')drawChart();
 }
@@ -39,6 +41,12 @@ stage.addEventListener('click',e=>{
  const b=e.target.closest('[data-op]');if(b)setOp(+b.dataset.op);
  const f=e.target.closest('.has-photo');
  if(f){$('#lb img').src=f.querySelector('img').src;$('#lb').hidden=false}
+ const u=e.target.closest('[data-pi]');
+ if(u&&!e.target.closest('a')){const i=+u.dataset.pi;if(i===sel)window.open(D.projects[pg*PS+i].url,'_blank','noopener');else{sel=i;place();info()}}
+ const a=e.target.closest('[data-pg]');if(a)flip(+a.dataset.pg);
+ const mv=e.target.closest('[data-mv]');if(mv)move(+mv.dataset.mv);
+ const t=e.target.closest('[data-tab]');
+ if(t&&+t.dataset.tab!==pg){const i=+t.dataset.tab;team(i>pg?1:-1,()=>{pg=i;sel=1})}
 });
 function enter(){if(!ready||entered)return;entered=true;boot.classList.add('off');setTimeout(()=>boot.remove(),750)}
 boot.addEventListener('click',enter);
@@ -47,11 +55,35 @@ addEventListener('keydown',e=>{
  const k=e.key.toLowerCase();
  if(k==='escape')$('#lb').hidden=true;
  if((k==='q'||k==='e')&&cur==='roster')setOp(op+(k==='e'?1:-1));
+ else if(cur==='projects'&&['q','e','arrowleft','arrowright'].includes(k))move(k==='e'||k==='arrowright'?1:-1);
  else if(/^[1-6]$/.test(k))location.hash=views[k-1][0];
 });
 const lines=['> INITIALIZING PERSONNEL FILE...','> LOADING MODULES [ PYTHON / ML / BI / WEB ]','> VERIFYING OPERATOR: YANUAR N. WICAKSONO','> STATUS: ONLINE'];
 let n=0;(function t(){if(n<lines.length){$('#bootlog').append(lines[n++]+'\n');setTimeout(t,380)}else{$('#bootgo').hidden=false;ready=true}})();
 const clk=()=>$('#clk').textContent=new Date().toLocaleTimeString('en-GB');clk();setInterval(clk,1000);
+// Project gallery (game Team-screen style)
+let pg=0,sel=1;
+const PS=4,pages=()=>Math.ceil(D.projects.length/PS);
+const sumHTML=p=>`<span class="mono">${p.type}</span><h3>${p.title}</h3><p>${p.summary}</p><div>${chips(p.tags)}</div><a class="pill y" href="${p.url}" target="_blank" rel="noopener noreferrer">OPEN PROJECT &#8599;</a>`;
+const pos=(i,n)=>{const o=i-sel,mx=Math.max(sel,n-1-sel,1);return `--o:${o};--z:${9-Math.abs(o)};--sp:${Math.min(70,100/mx)}%`};
+const teamHTML=()=>{
+ const n=pages(),list=D.projects.slice(pg*PS,pg*PS+PS);
+ if(sel>=list.length)sel=list.length-1;
+ return `<div class="bignum">${z(pg+1)}</div>
+ <div class="sum pop" id="sum">${sumHTML(list[sel])}</div>
+ <div class="units">${list.map((x,i)=>`<div class="unit${i===sel?' sel':''}" data-pi="${i}" style="${pos(i,list.length)}"><div class="plate"><b>${x.title}</b><span>${x.type}</span></div><div class="pframe cut"><div class="pimg cut"${x.img?` style="background-image:url('${x.img}')"`:''}></div><i class="idx">${z(pg*PS+i+1)}</i></div><div class="ring"></div></div>`).join('')}
+ <button class="arr l" data-mv="-1" aria-label="Previous project">&#9664;</button><button class="arr r" data-mv="1" aria-label="Next project">&#9654;</button></div>
+ <div class="bar"><div class="tabs"><a class="pill" href="#deployments">&#9664; BACK</a>${Array.from({length:n},(_,i)=>`<button data-tab="${i}" class="${i===pg?'on':''}">${z(i+1)}</button>`).join('')}</div>
+ ${n>1?'<button class="pill y" data-pg="1">MORE PROJECT &#9654;</button>':''}</div>`};
+function team(d,set){
+ const el=$('#team');if(!el)return;
+ const go=()=>{set&&set();el.innerHTML=teamHTML();el.className='team'+(d?d>0?' fromR':' fromL':'')};
+ if(d){el.classList.add(d>0?'toL':'toR');setTimeout(go,230)}else go();
+}
+const flip=d=>{if(pages()>1)team(d,()=>{pg=(pg+d+pages())%pages();sel=1})};
+function place(){const us=[...document.querySelectorAll('#team .unit')];us.forEach((u,i)=>{u.classList.toggle('sel',i===sel);u.style.cssText=pos(i,us.length)})}
+function info(){const s=$('#sum');if(!s)return;s.innerHTML=sumHTML(D.projects[pg*PS+sel]);s.classList.remove('pop');void s.offsetWidth;s.classList.add('pop')}
+function move(d){const n=document.querySelectorAll('#team .unit').length;if(n<2)return;sel=(sel+d+n)%n;place();info()}
 // Plotly skill chart (script loads only when the Skills page opens)
 let plotlyP;
 const loadPlotly=()=>plotlyP||(plotlyP=new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js';s.onload=ok;s.onerror=()=>{plotlyP=null;no()};document.head.append(s)}));
@@ -61,7 +93,7 @@ function drawChart(){
  loadPlotly().then(()=>{
   if(!el.isConnected)return;
   Plotly.newPlot(el,[{type:'scatterpolar',r:c(v.map(()=>0)),theta:c(k),customdata:c(v),fill:'toself',fillcolor:'rgba(255,230,0,.5)',line:{color:'#141414',width:2.5},marker:{size:8,color:'#141414',symbol:'diamond'},hovertemplate:'%{theta}: %{customdata}<extra></extra>'}],
-  {polar:{bgcolor:'rgba(0,0,0,0)',radialaxis:{range:[0,100],gridcolor:'#c6c6be',linecolor:'#141414',tickfont:{size:10}},angularaxis:{gridcolor:'#c6c6be',linecolor:'#141414'}},paper_bgcolor:'rgba(0,0,0,0)',font:{family:'Share Tech Mono, monospace',color:'#141414',size:12},margin:{t:30,b:30,l:70,r:70},showlegend:false},
+  {polar:{bgcolor:'rgba(0,0,0,0)',radialaxis:{range:[0,100],gridcolor:'#9a9a92',linecolor:'#141414',tickfont:{size:10}},angularaxis:{gridcolor:'#9a9a92',linecolor:'#141414'}},paper_bgcolor:'rgba(0,0,0,0)',font:{family:'Share Tech Mono, monospace',color:'#141414',size:12},margin:{t:30,b:30,l:70,r:70},showlegend:false},
   {displayModeBar:false,responsive:true}).then(()=>{
    const t0=performance.now();
    (function f(t){const p=Math.min(1,(t-t0)/900),e=1-Math.pow(1-p,3);Plotly.restyle(el,{r:[c(v.map(x=>x*e))]});if(p<1&&el.isConnected)requestAnimationFrame(f)})(t0);

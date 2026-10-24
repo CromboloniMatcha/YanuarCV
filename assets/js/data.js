@@ -14,8 +14,7 @@ window.CV={
  ],
  experience:[
   {year:'2025',status:'COMPLETED',title:'Full Stack Developer Internship',org:'Azura Labs',pts:['Coordinated team workflows and project delivery.','Designed and mapped system architectures using UML diagrams.','Developed and optimized responsive web pages.']},
-  {year:'2023-2025',status:'COMPLETED',title:'Volunteer, International Office and Affairs',org:'Campus',pts:['Managed and assisted international guests, including students, lecturers and visiting staff.','Facilitated the drafting and processing of Memorandums of Understanding (MOU).','Organized and coordinated international events and activities.']},
-  {year:'2025-now',status:'COMPLETED',title:'Freelance Developer',org:'Online',pts:['Making Online Course Website','Building web game for teaching kids','Building brain games to sharpening the intellect and IQ for student']}
+  {year:'2023-2025',status:'COMPLETED',title:'Volunteer, International Office and Affairs',org:'Campus',pts:['Managed and assisted international guests, including students, lecturers and visiting staff.','Facilitated the drafting and processing of Memorandums of Understanding (MOU).','Organized and coordinated international events and activities.']}
  ],
  education:[{y:'2022 - Current',t:'S1 Informatics Engineering',o:'Universitas PGRI Semarang'},{y:'2019 - 2022',t:'SMA St. Bernardus',o:'Pekalongan'}],
  certs:['Python Programming Course','SQL Programming Course','Excel Intermediate','Student Buddies Certificate','Innovators Intermediate AI Quest by Google Developer'],
@@ -23,6 +22,8 @@ window.CV={
  projects:[
   {title:'Project One',type:'DATA ANALYSIS',summary:'One line on the problem, your method and the result.',tags:['Python','Plotly'],url:'https://example.com',img:''},
   {title:'Project Two',type:'MACHINE LEARNING',summary:'One line on the model, the data and how it performed.',tags:['Python','NLP'],url:'https://example.com',img:''},
-  {title:'Project Three',type:'WEB',summary:'One line on what you built and who it is for.',tags:['HTML','CSS','JS'],url:'https://example.com',img:''}
+  {title:'Sapio Lab',type:'WEB',summary:'A game that could help develop kid, teenager , to young people develop their intellect',tags:['HTML','CSS','JS'],url:'https://sapiolab.vercel.app/',img:'sapio.jpg'},
+  {title:'Project Four',type:'DASHBOARD',summary:'One line on the dashboard and the decision it supports.',tags:['Shiny','Plotly'],url:'https://example.com',img:''},
+  {title:'Project Five',type:'BUSINESS INTEL',summary:'One line on the data, the insight and the impact.',tags:['Excel','SQL'],url:'https://example.com',img:''}
  ]
 };

@@ -22,7 +22,7 @@ window.CV={
  projects:[
   {title:'M5 Demand Forecasting',type:'DATA ANALYSIS',summary:'Forecast daily unit sales per product and store, then turn the forecasts into inventory decisions (safety stock, reorder points) and compare the cost of stockouts and overstock against a simple baseline.',tags:['Python'],url:'https://github.com/CromboloniMatcha/M5-Demand-Forecasting-Project',img:'assets/img/output.png'},
   {title:'Movies reccomendation',type:'MACHINE LEARNING',summary:'A model that give movies reccomendation based on user algorithm',tags:['Python','NLP', 'IN PROGRESS'],url:'https://github.com/touchme14/movies_recommendation_csv',img:'saptest.png'},
-  {title:'Sapio Lab',type:'WEB',summary:'A game that could help develop kid, teenager , to young people develop their intellect',tags:['HTML','CSS','JS'],url:'https://sapiolab.vercel.app/',img:'assets/img/sapioo.png'},
+  {title:'Sapio Lab',type:'WEB',summary:'A game that could help develop kid, teenager , to young people develop their intellect',tags:['HTML','CSS','JS'],url:'https://sapiolab.vercel.app/',img:'assets/img/sap.png'},
   {title:'Mental Health Detectionr',type:'Machine Learning',summary:'A model that help detecting sign of Mental Health problem based on chat',tags:['Python','NLP','Random Forest'],url:'https://github.com/touchme14/Mental-Health-Beta',img:'assets/img/mental.png'},
   {title:'IN PROGRESS',type:'IN PROGRESS',summary:'IN PROGRESS',tags:['IN PROGRESS'],url:'https://example.com',img:''}
  ]

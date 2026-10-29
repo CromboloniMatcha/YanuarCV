@@ -20,10 +20,10 @@ window.CV={
  certs:['Python Programming Course','SQL Programming Course','Excel Intermediate','Student Buddies Certificate','Innovators Intermediate AI Quest by Google Developer'],
  /* url opens in a new tab on another domain. Replace the placeholders. img is optional (e.g. assets/img/p1.jpg). */
  projects:[
-  {title:'Project One',type:'DATA ANALYSIS',summary:'One line on the problem, your method and the result.',tags:['Python','Plotly'],url:'https://example.com',img:''},
-  {title:'Project Two',type:'MACHINE LEARNING',summary:'One line on the model, the data and how it performed.',tags:['Python','NLP'],url:'https://example.com',img:''},
-  {title:'Sapio Lab',type:'WEB',summary:'A game that could help develop kid, teenager , to young people develop their intellect',tags:['HTML','CSS','JS'],url:'https://sapiolab.vercel.app/',img:'sapio.jpg'},
-  {title:'Project Four',type:'DASHBOARD',summary:'One line on the dashboard and the decision it supports.',tags:['Shiny','Plotly'],url:'https://example.com',img:''},
-  {title:'Project Five',type:'BUSINESS INTEL',summary:'One line on the data, the insight and the impact.',tags:['Excel','SQL'],url:'https://example.com',img:''}
+  {title:'M5 Demand Forecasting',type:'DATA ANALYSIS',summary:'Forecast daily unit sales per product and store, then turn the forecasts into inventory decisions (safety stock, reorder points) and compare the cost of stockouts and overstock against a simple baseline.',tags:['Python'],url:'https://github.com/CromboloniMatcha/M5-Demand-Forecasting-Project',img:'assets/img/output.png'},
+  {title:'Movies reccomendation',type:'MACHINE LEARNING',summary:'A model that give movies reccomendation based on user algorithm',tags:['Python','NLP', 'IN PROGRESS'],url:'https://github.com/touchme14/movies_recommendation_csv',img:''},
+  {title:'Sapio Lab',type:'WEB',summary:'A game that could help develop kid, teenager , to young people develop their intellect',tags:['HTML','CSS','JS'],url:'https://sapiolab.vercel.app/',img:'assets/img/sapio.jpg'},
+  {title:'Mental Health Detectionr',type:'Machine Learning',summary:'A model that help detecting sign of Mental Health problem based on chat',tags:['Python','NLP','Random Forest'],url:'https://github.com/touchme14/Mental-Health-Beta',img:'assets/img/mental.png'},
+  {title:'IN PROGRESS',type:'IN PROGRESS',summary:'IN PROGRESS',tags:['IN PROGRESS'],url:'https://example.com',img:''}
  ]
 };
